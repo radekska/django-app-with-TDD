@@ -1,1 +1,1 @@
-Code repository for Test-Driven Development With Python book.
+Code repository for "Test-Driven Development With Python" book.
