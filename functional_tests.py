@@ -10,6 +10,12 @@ class NewVisitorTest(unittest.TestCase):
 	def tearDown(self):
 		self.browser.quit()
 
+	def check_if_exists_in_table(self, input_text):
+		table = self.browser.find_element_by_id('id_list_table')
+		rows = table.find_elements_by_tag_name('tr')
+		self.assertIn(input_text, [row.text for row in rows], 
+			f"New to-do item did not apper in the table \nContents wher {table.text}")
+
 	def test_list_creation_and_retrive(self):	
 		self.browser.get("http://localhost:8000")
 		self.assertIn('To-Do lists', self.browser.title)
@@ -25,15 +31,9 @@ class NewVisitorTest(unittest.TestCase):
 		inputbox.send_keys(Keys.ENTER)
 		time.sleep(1)
 
-		table = self.browser.find_element_by_id('id_list_table')
-		rows = table.find_elements_by_tag_name('tr')
+		self.check_if_exists_in_table('1: Buy lambo')
+		self.check_if_exists_in_table('2: Make tattooo')
 
-		self.assertIn("1: Buy lambo", [row.text for row in rows], 
-			f"New to-do item did not apper in the table \nContents wher {table.text}")
-
-		self.assertIn("2: Make tattoo", [row.text for row in rows], 
-			f"New to-do item did not apper in the table \nContents wher {table.text}")
-		
 		self.fail('Finish the tests!')
 
 if __name__ == "__main__":

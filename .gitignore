@@ -3,3 +3,4 @@ virtualenv/
 geckodriver.log
 __pycache__
 *.pyc
+lists/migrations
