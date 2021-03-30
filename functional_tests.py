@@ -27,7 +27,12 @@ class NewVisitorTest(unittest.TestCase):
 
 		table = self.browser.find_element_by_id('id_list_table')
 		rows = table.find_elements_by_tag_name('tr')
-		self.assertTrue(any(row.text == '1: Buy lambo' for row in rows), "New to-do item did not apper in the table")
+
+		self.assertIn("1: Buy lambo", [row.text for row in rows], 
+			f"New to-do item did not apper in the table \nContents wher {table.text}")
+
+		self.assertIn("2: Make tattoo", [row.text for row in rows], 
+			f"New to-do item did not apper in the table \nContents wher {table.text}")
 		
 		self.fail('Finish the tests!')
 
