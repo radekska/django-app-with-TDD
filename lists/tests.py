@@ -40,6 +40,9 @@ class HomePageTest(TestCase):
 	# 	expected_html_data = render_to_string('home.html')
 	# 	self.assertEqual(html_data, expected_html_data)
 
+	def make_post_request(self):
+		new_item = "A new list item"
+		return self.client.post('/', data={"item_text":new_item})
 		
 	def test_use_of_home_template(self):
 		response = self.client.get('/')
@@ -47,7 +50,33 @@ class HomePageTest(TestCase):
 
 	def test_can_save_a_POST_request(self):
 		new_item = "A new list item"
-		response = self.client.post('/', data={"item_text":new_item})
-		self.assertIn(new_item, response.content.decode())
-		self.assertTemplateUsed(response, 'home.html')
+		self.make_post_request()
+		self.assertTrue(Item.objects.count())
+		self.assertTrue(new_item, Item.objects.get(text=new_item).text)
+
+	def test_redirects_after_post(self):
+		response = self.make_post_request()
+		self.assertEqual(response.status_code, 302)
+		self.assertEqual(response['location'], '/')
+
+	def test_if_saves_items_when_necessary(self):
+		self.client.get('/')
+		self.assertEqual(Item.objects.count(), 0)
+
+	def test_displays_all_list_items(self):
+		Item.objects.create(text='Item 1: one')
+		Item.objects.create(text='Item 2: two')
+
+		response = self.client.get('/')
+
+		self.assertIn('Item 1: one', response.content.decode())
+		self.assertIn('Item 2: two', response.content.decode())
+
+
+
+
+
+
+
+
 
