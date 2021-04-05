@@ -24,10 +24,6 @@ class ItemModelTest(TestCase):
 
 
 
-
-
-
-
 class HomePageTest(TestCase):
 	# def test_home_page_url_mapping(self):
 	# 	found = resolve('/')
@@ -57,24 +53,27 @@ class HomePageTest(TestCase):
 	def test_redirects_after_post(self):
 		response = self.make_post_request()
 		self.assertEqual(response.status_code, 302)
-		self.assertEqual(response['location'], '/')
+		self.assertEqual(response['location'], '/lists/the-only-list-in-the-world/')
 
 	def test_if_saves_items_when_necessary(self):
 		self.client.get('/')
 		self.assertEqual(Item.objects.count(), 0)
 
-	def test_displays_all_list_items(self):
-		Item.objects.create(text='Item 1: one')
-		Item.objects.create(text='Item 2: two')
 
-		response = self.client.get('/')
-
-		self.assertIn('Item 1: one', response.content.decode())
-		self.assertIn('Item 2: two', response.content.decode())
+class ListViewTest(TestCase):
+	def test_uses_list_template(self):
+		response = self.client.get('/lists/the-only-list-in-the-world/')
+		self.assertTemplateUsed(response, 'list.html')
 
 
+	def test_displays_all_items(self):
+		Item.objects.create(text='item one')
+		Item.objects.create(text='item two')
 
+		response = self.client.get('/lists/the-only-list-in-the-world/')
 
+		self.assertContains(response, 'item one')
+		self.assertContains(response, 'item two')
 
 
 
