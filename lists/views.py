@@ -6,14 +6,26 @@ def home_page(request):
 	return render(request, 'home.html')
 
 
-def view_list(request):
+def view_list(request, list_id):
 	context = dict(
-		items_list=Item.objects.all()
+		items_list = List.objects.get(id=list_id)
 	)
-
 	return render(request, 'list.html', context)
 
 def new_list(request):
-	item_list = List.objects.create()
-	Item.objects.create(text=request.POST['item_text'], item_list=item_list)
-	return redirect('/lists/the-only-list-in-the-world/')
+	new_item_list = List.objects.create()
+
+	new_item_text = request.POST.get('item_text')
+	Item.objects.create(text=new_item_text, item_list=new_item_list)
+	return redirect(f'/lists/{new_item_list.id}/')
+
+def add_item(request, list_id):
+	existing_item_list = List.objects.get(id=list_id)
+
+	new_item_text = request.POST.get('item_text')
+	Item.objects.create(text=new_item_text, item_list=existing_item_list)
+	return redirect(f'/lists/{existing_item_list.id}/')
+
+
+
+	
