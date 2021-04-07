@@ -1,4 +1,4 @@
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
@@ -8,7 +8,7 @@ import unittest
 MAX_WAIT = 10
 
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 	@classmethod
 	def setUpClass(cls):
 		super().setUpClass()
@@ -36,7 +36,7 @@ class NewVisitorTest(LiveServerTestCase):
 
 	def test_can_start_list_for_one_user(self):
 		self.browser.get(self.live_server_url)
-		self.assertIn('To-Do lists', self.browser.title)
+		self.assertIn('To-Do list', self.browser.title)
 		
 		header_text = self.browser.find_element_by_tag_name('h1').text
 		self.assertIn('To-Do', header_text)
@@ -94,6 +94,8 @@ class NewVisitorTest(LiveServerTestCase):
 		page_text = self.browser.find_element_by_tag_name('body').text
 		self.assertNotIn('1: Make tattoo for Juliett', page_text)
 		self.assertIn('1: Jump from plane', page_text)
+		self.browser.quit()
+
 
 
 	def test_layout_and_style(self):
@@ -110,14 +112,12 @@ class NewVisitorTest(LiveServerTestCase):
 		inputbox.send_keys(Keys.ENTER)
 
 		self.wait_for_row_in_table('1: Testing')
-		
+
 		inputbox = self.browser.find_element_by_id('id_new_item')
 		self.assertAlmostEqual(
 			inputbox.location['x'] + inputbox.size['width'] / 2,
 			512, delta=10
 			)
-		
-
 
 
 
