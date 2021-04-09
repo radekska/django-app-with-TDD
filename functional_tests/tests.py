@@ -2,6 +2,8 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
+
+import os
 import time
 import unittest
 
@@ -13,6 +15,11 @@ class NewVisitorTest(StaticLiveServerTestCase):
 	def setUpClass(cls):
 		super().setUpClass()
 		cls.browser = WebDriver()
+
+		staging_server = os.environ.get('STAGING_SERVER')
+		if staging_server:
+			cls.live_server_url = f'http://{staging_server}'
+
 
 	@classmethod
 	def tearDownClass(cls):
@@ -38,7 +45,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 		self.browser.get(self.live_server_url)
 		self.assertIn('To-Do list', self.browser.title)
 		
-		header_text = self.browser.find_element_by_tag_name('h1').text
+		header_text = self.browser.find_element_by_tag_name('h2').text
 		self.assertIn('To-Do', header_text)
 
 		inputbox = self.browser.find_element_by_id('id_new_item')
