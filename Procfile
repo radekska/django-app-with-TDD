@@ -1,1 +1,1 @@
-web: gunicorn superlists.gettingstarted.wsgi
+web: gunicorn superlists.wsgi
