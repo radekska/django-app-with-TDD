@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
 'rs-django-todo-list.herokuapp.com',
+'rs-django-todo-list-staging.herokuapp.com'
 ]
 
 
