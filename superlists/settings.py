@@ -16,20 +16,14 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*)3z!uh2(d63r$@6by1u1^1(oz^3#r5jcca7+yb_68w0v4ui-c'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = [
-'rs-django-todo-list.herokuapp.com',
-'rs-django-todo-list-staging.herokuapp.com'
-]
-
+if 'DJANGO_DEBUG_FALSE' in os.enviorn:
+    DEBUG = False
+    SECRET_KEY = os.enviorn['DJANGO_SECRET_KEY']
+    ALLOWED_HOSTS = [os.enviorn['SITE_NAME']]
+else:
+    DEBUG = True
+    SECRET_KEY = 'insecure_secret_key_for_dev'
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -131,8 +125,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals(), databases=False)
+try:
+    import django_heroku
+    # Using Django's builtin SQLite3 database for now.
+    django_heroku.settings(locals(), databases=False, allowed_hosts=False, secret_key=False)
+except:
+    pass
 
 # This will automatically configure DATABASE_URL, ALLOWED_HOSTS, WhiteNoise (for static assets), 
 # Logging, and Heroku CI for your application.
