@@ -16,10 +16,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-if 'DJANGO_DEBUG_FALSE' in os.enviorn:
+if 'DJANGO_DEBUG_FALSE' in os.environ:
     DEBUG = False
-    SECRET_KEY = os.enviorn['DJANGO_SECRET_KEY']
-    ALLOWED_HOSTS = [os.enviorn['SITE_NAME']]
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+    ALLOWED_HOSTS = [os.environ['SITE_NAME']]
 else:
     DEBUG = True
     SECRET_KEY = 'insecure_secret_key_for_dev'
