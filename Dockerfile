@@ -8,6 +8,10 @@ ADD . /todo_app/
 
 WORKDIR /todo_app
 
-RUN apt-get update && apt-get upgrade -y
+EXPOSE 8000
 
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip \
+
+	&& pip install -r requirements.txt
+
+CMD ["gunicorn", "superlists.wsgi", "--bind", "0.0.0.0:8000"]
