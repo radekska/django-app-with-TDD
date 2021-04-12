@@ -2,13 +2,13 @@
 FROM python:3.8.1
 
 # create app root directory 
-RUN mkdir /todo_app
+RUN mkdir /app
 
 # copy project files to Docker's root directory
-ADD . /todo_app/
+ADD . /app/
 
 # change cd to root directory
-WORKDIR /todo_app
+WORKDIR /app
 
 # upgrade pip and install requirements
 RUN pip install --upgrade pip \
