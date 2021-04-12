@@ -41,4 +41,5 @@ jobs:
           heroku_app_name: rs-django-todo-list-staging
           heroku_email: bp4fradek@gmail.com
           usedocker: true
+          buildpack: true
   
