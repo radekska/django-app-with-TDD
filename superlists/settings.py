@@ -134,4 +134,3 @@ if os.environ.get('HEROKU'):
 
 # This will automatically configure DATABASE_URL, ALLOWED_HOSTS, WhiteNoise (for static assets), 
 # Logging, and Heroku CI for your application.
-

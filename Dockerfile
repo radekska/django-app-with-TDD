@@ -12,10 +12,14 @@ WORKDIR /app
 
 # upgrade pip and install requirements
 RUN pip install --upgrade pip \
-&& pip install -r requirements.txt
+&& pip install -r requirements.txt \
+&& python3 manage.py collectstatic --noinput
 
 # EXPOSE 8000
 
 # CMD ["gunicorn", "superlists.wsgi", "--bind", "0.0.0.0:8000"]
 
 CMD gunicorn superlists.wsgi --bind 0.0.0.0:$PORT
+
+# TO DO - przekminic czemu Docker + Heroku deploy nie widzi statykow....
+# przekmin python manage.py collectstatic --noinput
