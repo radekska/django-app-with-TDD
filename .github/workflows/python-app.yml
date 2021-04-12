@@ -5,13 +5,9 @@ name: Python application
 
 on:
   push:
-    branches:
-      - master
-      - staging
+    branches: [master, staging]
   pull_request:
-    branches:
-      - master
-      - staging
+    branches: [master, staging]
 jobs:
   build:
 
