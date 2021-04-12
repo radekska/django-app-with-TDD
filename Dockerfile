@@ -12,8 +12,7 @@ WORKDIR /todo_app
 
 # upgrade pip and install requirements
 RUN pip install --upgrade pip \
-&& pip install -r requirements.txt \
-&& python manage.py collectstatic --noinput
+&& pip install -r requirements.txt
 
 # EXPOSE 8000
 
