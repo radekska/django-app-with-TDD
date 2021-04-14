@@ -34,9 +34,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages',
     'lists',
 ]
+
+if os.environ.get('HEROKU'):
+    INSTALLED_APPS.append('storages')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -127,10 +129,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Configure Django App for Heroku.
 
-if os.environ.get('HEROKU'):
-    import django_heroku
-    # Using Django's builtin SQLite3 database for now.
-    django_heroku.settings(locals(), databases=False, allowed_hosts=False, secret_key=False)
+# if os.environ.get('HEROKU'):
+#     import django_heroku
+#     # Using Django's builtin SQLite3 database for now.
+#     django_heroku.settings(locals(), databases=False, allowed_hosts=False, secret_key=False)
 
 
 # This will automatically configure DATABASE_URL, ALLOWED_HOSTS, WhiteNoise (for static assets), 
