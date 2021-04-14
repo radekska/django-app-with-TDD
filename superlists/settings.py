@@ -75,13 +75,25 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.environ.get('HEROKU'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'dbuq792me3ba7j',
+            'HOST': 'ec2-34-252-251-16.eu-west-1.compute.amazonaws.com',
+            'PORT': 5432,
+            'USER': 'jtzqgdylivvtox',
+            'PASSWORD': '6225ea7182475ac8867d9192ffcf4dbd32fcab68869238ff228be1ff17c3cca7'
+        }
     }
-}
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+# postgres://jtzqgdylivvtox:6225ea7182475ac8867d9192ffcf4dbd32fcab68869238ff228be1ff17c3cca7@ec2-34-252-251-16.eu-west-1.compute.amazonaws.com:5432/dbuq792me3ba7j
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -149,14 +161,3 @@ if os.environ.get('HEROKU'):
 else:
      STATIC_URL = '/static/'
      STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-
-# Configure Django App for Heroku.
-
-if os.environ.get('HEROKU'):
-    import django_heroku
-    django_heroku.settings(locals(), allowed_hosts=False, secret_key=False)
-
-
-# This will automatically configure DATABASE_URL, ALLOWED_HOSTS, WhiteNoise (for static assets), 
-# Logging, and Heroku CI for your application.
