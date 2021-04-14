@@ -129,6 +129,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 if os.environ.get('HEROKU'):
     import django_heroku
     # Using Django's builtin SQLite3 database for now.
+    print("Adjusting to heroku....")
     django_heroku.settings(locals(), databases=False, allowed_hosts=False, secret_key=False)
 
 
