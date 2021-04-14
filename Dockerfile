@@ -4,6 +4,9 @@ FROM python:3.8.1
 # create app root directory 
 RUN mkdir /app
 
+# create static directory
+RUN mkdir /app/static
+
 # copy project files to Docker's root directory
 ADD . /app/
 
