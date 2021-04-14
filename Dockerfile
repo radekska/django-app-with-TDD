@@ -11,6 +11,7 @@ RUN mkdir /app/static
 ADD . /app/
 
 # set env variables for AWS S3 storage
+ENV HEROKU=True
 ENV AWS_ACCESS_KEY_ID=AKIA2NB7TG5EAM3FJXFN
 ENV AWS_SECRET_ACCESS_KEY=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
 ENV AWS_STORAGE_BUCKET_NAME=rs-django-todo-list-staging
