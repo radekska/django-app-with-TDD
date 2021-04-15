@@ -10,9 +10,7 @@ on:
     branches: [master, staging]
 jobs:
   ci-cd-pipeline:
-
     runs-on: ubuntu-latest
-
     steps:
      - uses: actions/checkout@v2
      - name: Set up Python 3.9
@@ -46,7 +44,3 @@ jobs:
        env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
        run: heroku container:release -a ${{ secrets.HEROKU_APP_NAME }} web 
-
-    
-
-  
