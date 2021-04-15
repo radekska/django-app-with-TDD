@@ -26,6 +26,7 @@ WORKDIR /app
 # upgrade pip and install requirements
 RUN pip install --upgrade pip \
 && pip install -r requirements.txt \
+&& python3 manage.py migrate --noinput \
 && python3 manage.py collectstatic --noinput --verbosity 3
 
 # EXPOSE 8000

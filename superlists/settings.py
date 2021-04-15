@@ -30,7 +30,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -98,7 +98,6 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-# postgres://jtzqgdylivvtox:6225ea7182475ac8867d9192ffcf4dbd32fcab68869238ff228be1ff17c3cca7@ec2-34-252-251-16.eu-west-1.compute.amazonaws.com:5432/dbuq792me3ba7j
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
