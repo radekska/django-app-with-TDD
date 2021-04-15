@@ -1,0 +1,6 @@
+# Ignoring below directories and files while creating container:
+Dockerfile
+Procfile
+README.md
+virtualenv
+.gitignore
