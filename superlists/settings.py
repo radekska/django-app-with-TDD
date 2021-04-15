@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 import re
 from pathlib import Path
-from utils import db_url_parser
+from utils.db_url_parser import parse_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 
 if os.environ.get('HEROKU'):
     db_url = os.environ.get('DATABASE_URL')
-    db_data = db_url_parser(db_url)
+    db_data = parse_database_url(db_url)
 
     DATABASES = {
         'default': {
