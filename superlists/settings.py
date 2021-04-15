@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 if os.environ.get('HEROKU'):
-    db_url = os.environ.get('DATABASE_URL')
+    db_url = os.environ['DATABASE_URL']
     db_data = parse_database_url(db_url)
 
     DATABASES = {
