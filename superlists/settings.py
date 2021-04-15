@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+import re
 from pathlib import Path
+from utils import db_url_parser
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -76,14 +78,17 @@ WSGI_APPLICATION = 'superlists.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 if os.environ.get('HEROKU'):
+    db_url = os.environ.get('DATABASE_URL')
+    db_data = db_url_parser(db_url)
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'dbuq792me3ba7j',
-            'HOST': 'ec2-34-252-251-16.eu-west-1.compute.amazonaws.com',
-            'PORT': 5432,
-            'USER': 'jtzqgdylivvtox',
-            'PASSWORD': '6225ea7182475ac8867d9192ffcf4dbd32fcab68869238ff228be1ff17c3cca7'
+            'NAME': db_data.name,
+            'HOST': db_data.host,
+            'PORT': db_data.port,
+            'USER': db_data.user,
+            'PASSWORD': db_data.password
         }
     }
 else:
