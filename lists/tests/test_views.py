@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils.html import escape
 from lists.models import Item, List
 
 
@@ -73,22 +74,37 @@ class NewItemTest(TestCase):
 
 
 class NewListTest(TestCase):
-	def __make_post_request(self):
-		new_item = "A new list item"
+	def __make_post_request(self, new_item="A new list item"):
 		return self.client.post('/lists/new', data={"item_text":new_item})
 
 	def test_can_save_a_POST_request(self):
 		new_item = "A new list item"
 		self.__make_post_request()
+		
 		self.assertEqual(Item.objects.count(), 1)
 		self.assertTrue(new_item, Item.objects.get(text=new_item).text)
 
 	def test_redirects_after_post(self):
 		response = self.__make_post_request()
 		new_list = List.objects.first()
+		
 		self.assertEqual(response.status_code, 302)
 		self.assertRedirects(response, f'/lists/{new_list.id}/')
 
+	def test_validation_errors_are_sent_back(self):
+		response = self.__make_post_request(new_item='')
+		
+		self.assertEqual(200, response.status_code)
+		self.assertTemplateUsed(response, 'home.html')
+
+		expected_error = escape("You can't have empty list item!")
+		self.assertContains(response, expected_error)
+
+	def test_invalid_list_items_arent_saved(self):
+		self.__make_post_request(new_item='')
+
+		self.assertEqual(Item.objects.count(), 0)
+		self.assertEqual(List.objects.count(), 0)
 
 
 
