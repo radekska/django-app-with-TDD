@@ -107,6 +107,23 @@ class ListViewTest(TestCase):
 		expected_error = escape(EMPTY_ITEM_ERROR)
 		self.assertContains(response, expected_error)
 
+	# def test_dupliacate_item_validation_errors_on_list_page(self):
+	# 	list_1 = List.objects.create()
+	# 	item_1 = Item.objects.create(item_list=list_1, text='testing text')
+	# 	response = self.client.post(
+	# 		f'/lists/{list_1.id}/',
+	# 		data={'text': 'testing text'}
+	# 	)
+		
+	# 	expected_error = escape("You 've already got this in your list!")
+	# 	self.assertEqual(response.status_code, 200)
+	# 	self.assertContains(response, expected_error)
+	# 	self.assertTemplateUsed(response, 'list.html')
+	# 	self.assertEqual(Item.objects.all(), 1)
+
+		
+
+
 class NewListTest(TestCase):
 	def __make_post_request(self, new_item="A new list item"):
 		return self.client.post('/lists/new', data={"text":new_item})
