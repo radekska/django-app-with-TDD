@@ -7,7 +7,17 @@ class List(models.Model):
 	
 class Item(models.Model):
 	text = models.TextField(default='')
+	# When deleting List, with models.CASCADE django will delete all items related to that list as well.
 	item_list = models.ForeignKey(List, default=None, on_delete=models.CASCADE)
-	# when deleting List, with models.CASCADE django will delete all items related to that list as well.
 	
+	# Sets of field names that, taken together, must be unique:
+	class Meta:
+		# The id ordering for the object, for use when obtaining lists of objects:
+		ordering = ('id',)
+		# Sets of field names that, taken together, must be unique:
+		unique_together = ('item_list', 'text')
+
+	def __str__(self):
+		return self.text
+
 

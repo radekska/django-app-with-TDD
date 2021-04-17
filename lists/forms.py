@@ -13,7 +13,7 @@ EMPTY_ITEM_ERROR = "You can't have empty list item!"
 
 # Will use ModelForm as it uses form validation directly from model.
 class ItemForm(forms.ModelForm):
-    
+
     class Meta:
         model = Item
         fields = ('text', )
@@ -28,3 +28,6 @@ class ItemForm(forms.ModelForm):
             'text': {'required':EMPTY_ITEM_ERROR}
             }
 
+    def save(self,for_list):
+        self.instance.item_list = for_list
+        return super().save()
