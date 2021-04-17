@@ -10,6 +10,9 @@ class HomePageTest(TestCase):
 
 
 class ListViewTest(TestCase):
+	def setUp(self):
+		self.new_item_text = 'A new item to existing list.'
+
 	def test_uses_list_template(self):
 		item_list = List.objects.create()
 		response = self.client.get(f'/lists/{item_list.id}/')
@@ -40,18 +43,12 @@ class ListViewTest(TestCase):
 		response = self.client.get(f'/lists/{correct_list.id}/')
 		self.assertEqual(response.context['items_list'], correct_list)
 
-
-class NewItemTest(TestCase):
-	def setUp(self):
-		self.new_item_text = 'A new item to existing list.'
-
-
 	def test_can_save_POST_request_to_existing_list(self):
 		other_list = List.objects.create()
 		correct_list = List.objects.create()
 
 		self.client.post(
-			f'/lists/{correct_list.id}/add_item',
+			f'/lists/{correct_list.id}/',
 			data={'item_text':self.new_item_text}
 			)
 		self.assertEqual(Item.objects.count(), 1)
@@ -60,17 +57,16 @@ class NewItemTest(TestCase):
 		self.assertEqual(new_item.text, self.new_item_text)
 		self.assertEqual(new_item.item_list, correct_list)
 
-	def test_redirects_to_list_view(self):
+	def test_post_redirects_to_list_view(self):
 		other_list = List.objects.create()
 		correct_list = List.objects.create()
 
 		response = self.client.post(
-			f'/lists/{correct_list.id}/add_item',
+			f'/lists/{correct_list.id}/',
 			data={'item_text':self.new_item_text}
 			)
 
 		self.assertRedirects(response, f'/lists/{correct_list.id}/')
-
 
 
 class NewListTest(TestCase):

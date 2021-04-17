@@ -8,6 +8,11 @@ def home_page(request):
 
 
 def view_list(request, list_id):
+	items_list = List.objects.get(id=list_id)
+	if request.method == 'POST':
+		Item.objects.create(text=request.POST['item_text'], item_list=items_list)
+		return redirect(f'/lists/{items_list.id}/')
+	
 	context = dict(
 		items_list = List.objects.get(id=list_id)
 	)
@@ -27,14 +32,4 @@ def new_list(request):
 		return render(request, 'home.html', {'error':error})
 
 	return redirect(f'/lists/{new_item_list.id}/')
-
-def add_item(request, list_id):
-	existing_item_list = List.objects.get(id=list_id)
-
-	new_item_text = request.POST.get('item_text')
-	Item.objects.create(text=new_item_text, item_list=existing_item_list)
-	return redirect(f'/lists/{existing_item_list.id}/')
-
-
-
 	
