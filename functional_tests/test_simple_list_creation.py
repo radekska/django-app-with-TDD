@@ -12,7 +12,7 @@ class NewVisitorTest(FunctionalTest):
 		header_text = self.browser.find_element_by_tag_name('h2').text
 		self.assertIn('To-Do', header_text)
 
-		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox = self.get_item_input_box()
 		self.assertEqual(
 			inputbox.get_attribute('placeholder'), 'Enter a to-do item')
 		
@@ -21,7 +21,7 @@ class NewVisitorTest(FunctionalTest):
 
 		self.wait_for_row_in_table('1: Buy lambo')
 
-		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox = self.get_item_input_box()
 		inputbox.send_keys('Make tattoo')
 		inputbox.send_keys(Keys.ENTER)
 
@@ -35,7 +35,7 @@ class NewVisitorTest(FunctionalTest):
 		# user Juliett
 		self.browser.get(self.live_server_url)
 
-		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox = self.get_item_input_box()
 		inputbox.send_keys('Make tattoo for Juliett')
 		inputbox.send_keys(Keys.ENTER)
 
@@ -53,7 +53,7 @@ class NewVisitorTest(FunctionalTest):
 		page_text = self.browser.find_element_by_tag_name('body').text
 		self.assertNotIn('1: Make tattoo for Juliett', page_text)
 
-		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox = self.get_item_input_box()
 		inputbox.send_keys('Jump from plane')
 		inputbox.send_keys(Keys.ENTER)
 		self.wait_for_row_in_table('1: Jump from plane')

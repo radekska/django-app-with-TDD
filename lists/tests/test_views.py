@@ -17,7 +17,7 @@ class HomePageTest(TestCase):
 
 class ListViewTest(TestCase):
 	def setUp(self):
-		self.new_item_text = 'A new item to existing list.'
+		self.new_text = 'A new item to existing list.'
 
 	def test_uses_list_template(self):
 		item_list = List.objects.create()
@@ -55,12 +55,12 @@ class ListViewTest(TestCase):
 
 		self.client.post(
 			f'/lists/{correct_list.id}/',
-			data={'item_text':self.new_item_text}
+			data={'text':self.new_text}
 			)
 		self.assertEqual(Item.objects.count(), 1)
 		new_item = Item.objects.first()
 		
-		self.assertEqual(new_item.text, self.new_item_text)
+		self.assertEqual(new_item.text, self.new_text)
 		self.assertEqual(new_item.item_list, correct_list)
 
 	def test_post_redirects_to_list_view(self):
@@ -69,7 +69,7 @@ class ListViewTest(TestCase):
 
 		response = self.client.post(
 			f'/lists/{correct_list.id}/',
-			data={'item_text':self.new_item_text}
+			data={'text':self.new_text}
 			)
 
 		self.assertRedirects(response, f'/lists/{correct_list.id}/')
@@ -78,7 +78,7 @@ class ListViewTest(TestCase):
 		items_list = List.objects.create()
 		response = self.client.post(
 			f'/lists/{items_list.id}/',
-			data={'item_text':''}
+			data={'text':''}
 		)
 		self.assertEqual(response.status_code, 200)
 		self.assertTemplateUsed(response, 'list.html')
@@ -88,7 +88,7 @@ class ListViewTest(TestCase):
 
 class NewListTest(TestCase):
 	def __make_post_request(self, new_item="A new list item"):
-		return self.client.post('/lists/new', data={"item_text":new_item})
+		return self.client.post('/lists/new', data={"text":new_item})
 
 	def test_can_save_a_POST_request(self):
 		new_item = "A new list item"
