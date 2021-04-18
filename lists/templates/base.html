@@ -31,11 +31,13 @@
 					{% block table %}
 					{% endblock %}
 				</div>
-			<script src="{% static 'jquery-3.6.0.min.js' %}"></script>
-			<script src="{% static 'list.js' %}"></script>
-			<script>
-				window.Superlists.initialize();
-			</script>
+				<script src="{% static 'jquery-3.6.0.min.js' %}"></script>
+				<script src="{% static 'list.js' %}"></script>
+				<script>
+					$(document).ready(function(){
+						window.Superlists.initialize();
+					});
+				</script>
 			</div>
 	</body>
 </html>

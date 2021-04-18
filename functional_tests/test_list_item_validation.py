@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 from unittest import skip
 from .base import FunctionalTest
 
@@ -67,3 +68,23 @@ class ItemValidationTest(FunctionalTest):
         self.get_item_input_box().send_keys('Typing...')
         self.wait_for(lambda : self.assertFalse(
             self.get_error_element().is_displayed()))
+
+    def test_error_messages_are_cleared_on_mouse_click(self):
+        self.browser.get(self.live_server_url)
+        self.action_chains = ActionChains(self.browser)
+
+        self.get_item_input_box().send_keys('Brush your teeth.')
+        self.get_item_input_box().send_keys(Keys.ENTER)
+        self.wait_for_row_in_table('1: Brush your teeth.')
+
+        self.get_item_input_box().send_keys('Brush your teeth.')
+        self.get_item_input_box().send_keys(Keys.ENTER)
+        self.wait_for(lambda : self.assertTrue(
+            self.get_error_element().is_displayed()))
+
+        self.action_chains.click(self.get_item_input_box()).perform()
+        self.wait_for(lambda : self.assertFalse(
+            self.get_error_element().is_displayed()))
+
+
+
