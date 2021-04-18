@@ -53,3 +53,17 @@ class ItemValidationTest(FunctionalTest):
             "You 've already got this in your list!"
         ))    
 
+    def test_error_messages_are_cleared_on_input(self):
+        self.browser.get(self.live_server_url)
+        self.get_item_input_box().send_keys('Take a shower.')
+        self.get_item_input_box().send_keys(Keys.ENTER)
+        self.wait_for_row_in_table('1: Take a shower.')
+        self.get_item_input_box().send_keys('Take a shower.')
+        self.get_item_input_box().send_keys(Keys.ENTER)
+
+        self.wait_for(lambda : self.assertTrue(
+            self.get_error_element().is_displayed()))
+
+        self.get_item_input_box().send_keys('Typing...')
+        self.wait_for(lambda : self.assertFalse(
+            self.get_error_element().is_displayed()))
