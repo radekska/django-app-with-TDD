@@ -18,7 +18,7 @@ ENV AWS_STORAGE_BUCKET_NAME=rs-django-todo-list-staging
 
 # set DB url
 
-ENV DATABASE_URL=postgres://jtzqgdylivvtox:6225ea7182475ac8867d9192ffcf4dbd32fcab68869238ff228be1ff17c3cca7@ec2-34-252-251-16.eu-west-1.compute.amazonaws.com:5432/dbuq792me3ba7j
+ENV DATABASE_URL=postgres://kyuyifqtpbiojt:d742d9029b84770b9c5efb256881877e4e68f2f6dcd2505f78543be781a4a944@ec2-54-155-35-88.eu-west-1.compute.amazonaws.com:5432/d4u27jpbjdfggs
 
 # change cd to root directory
 WORKDIR /app
@@ -26,6 +26,7 @@ WORKDIR /app
 # upgrade pip and install requirements
 RUN pip install --upgrade pip \
 && pip install -r requirements.txt \
+&& python3 manage.py migrate --noinput \
 && python3 manage.py collectstatic --noinput --verbosity 3
 
 # EXPOSE 8000
