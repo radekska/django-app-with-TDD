@@ -16,7 +16,12 @@
 					<div class="text-center">
 						<h2>{% block header_text %}{% endblock %}</h2>
 						<form method="POST" action="{% block form_action %}{% endblock %}"> {% csrf_token %}
-								<input name="item_text" id="id_new_item" class="form-control input-md" placeholder="Enter a to-do item" />
+							{{ form.text }}
+								{% if form.errors %}
+									<div class="form-group has-error">
+										<span class="help-block"> {{ form.text.errors }}</span>
+									</div>
+								{% endif %}
 						</form>
 					</div>
 				</div>
@@ -26,6 +31,13 @@
 					{% block table %}
 					{% endblock %}
 				</div>
+				<script src="{% static 'jquery-3.6.0.min.js' %}"></script>
+				<script src="{% static 'list.js' %}"></script>
+				<script>
+					$(document).ready(function(){
+						window.Superlists.initialize();
+					});
+				</script>
 			</div>
 	</body>
 </html>

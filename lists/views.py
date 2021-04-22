@@ -1,31 +1,38 @@
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from lists.models import Item, List
+from lists.forms import (
+	EMPTY_ITEM_ERROR, DUPLICATE_ITEM_ERROR,
+	ItemForm, ExistingListItemForm
+)
 
 def home_page(request):
-	return render(request, 'home.html')
+	return render(request, 'home.html', {'form': ItemForm()})
 
 
 def view_list(request, list_id):
-	context = dict(
-		items_list = List.objects.get(id=list_id)
-	)
-	return render(request, 'list.html', context)
+	items_list = List.objects.get(id=list_id)
+	form = ExistingListItemForm(for_list=items_list)
+
+	if request.method == 'POST':
+		form = ExistingListItemForm(for_list=items_list, data=request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect(items_list)
+			
+	return render(request, 'list.html', {
+		'items_list': items_list,
+		'form': form
+	})
 
 def new_list(request):
-	new_item_list = List.objects.create()
+	form = ItemForm(data=request.POST)
+	if form.is_valid():
+		new_item_list = List.objects.create()
+		form.save(for_list=new_item_list)
+	else:
+		return render(request, 'home.html', {'form': form})
 
-	new_item_text = request.POST.get('item_text')
-	Item.objects.create(text=new_item_text, item_list=new_item_list)
-	return redirect(f'/lists/{new_item_list.id}/')
+	return redirect(new_item_list)
 
-def add_item(request, list_id):
-	existing_item_list = List.objects.get(id=list_id)
-
-	new_item_text = request.POST.get('item_text')
-	Item.objects.create(text=new_item_text, item_list=existing_item_list)
-	return redirect(f'/lists/{existing_item_list.id}/')
-
-
-
-	
