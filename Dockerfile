@@ -13,6 +13,17 @@ ADD . /app/
 # change cd to root directory
 WORKDIR /app
 
+ARG HEROKU="True"
+
+ARG AWS_ACCESS_KEY_ID="default"
+ARG AWS_SECRET_ACCESS_KEY="default"
+ARG AWS_STORAGE_BUCKET_NAME="default"
+
+ARG EMAIL_HOST_USER="default"
+ARG EMAIL_HOST_PASSWORD="default"
+
+ARG DATABASE_URL="default"
+
 # upgrade pip and install requirements
 RUN pip install --upgrade pip \
 && pip install -r requirements.txt \
