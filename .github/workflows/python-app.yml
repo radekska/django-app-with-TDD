@@ -40,8 +40,8 @@ jobs:
        env: 
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
        run: |
-        heroku config:set -a ${{ secrets.HEROKU_APP_NAME_PROD }} EMAIL_HOST_USER=123 \
-        EMAIL_HOST_PASSWORD=123
+        heroku config:set -a ${{ secrets.HEROKU_APP_NAME_PROD }} EMAIL_HOST_USER=${{secrets.EMAIL_HOST_USER}} \
+        EMAIL_HOST_PASSWORD=${{secrets.EMAIL_HOST_PASSWORD}}
         heroku container:push -a ${{ secrets.HEROKU_APP_NAME_PROD }} web
      - name: Release App to Heroku 
        env:
