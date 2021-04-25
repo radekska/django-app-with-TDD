@@ -4,4 +4,5 @@ geckodriver.log
 __pycache__
 *.pyc
 lists/migrations
+accounts/migrations
 .DS_Store
