@@ -15,14 +15,15 @@ WORKDIR /app
 
 ARG HEROKU="True"
 
-ARG AWS_ACCESS_KEY_ID="default"
-ARG AWS_SECRET_ACCESS_KEY="default"
-ARG AWS_STORAGE_BUCKET_NAME="default"
+# need to declare those vars as needed at Docker container build time.
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG AWS_STORAGE_BUCKET_NAME
 
-ARG EMAIL_HOST_USER="default"
-ARG EMAIL_HOST_PASSWORD="default"
+ARG EMAIL_HOST_USER
+ARG EMAIL_HOST_PASSWORD
 
-ARG DATABASE_URL="default"
+ARG DATABASE_URL
 
 # upgrade pip and install requirements
 RUN pip install --upgrade pip \
@@ -30,8 +31,14 @@ RUN pip install --upgrade pip \
 && python3 manage.py migrate --noinput \
 && python3 manage.py collectstatic --noinput --verbosity 3
 
-# EXPOSE 8000
+# need to decleare env vars as well as needed in run time.
+ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ENV AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
 
-# CMD ["gunicorn", "superlists.wsgi", "--bind", "0.0.0.0:8000"]
+ENV EMAIL_HOST_USER=${EMAIL_HOST_USER}
+ENV EMAIL_HOST_PASSWORD=%{EMAIL_HOST_PASSWORD}
+
+ENV DATABASE_URL=%{DATABASE_URL}
 
 CMD gunicorn superlists.wsgi --bind 0.0.0.0:$PORT
