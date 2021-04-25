@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib import auth
 import uuid
+
 
 class User(models.Model):
     email = models.EmailField(primary_key=True)

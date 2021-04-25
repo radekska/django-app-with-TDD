@@ -1,5 +1,5 @@
 from django.test import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, call
 from accounts.models import Token
 
 import accounts.views
@@ -77,6 +77,7 @@ class LoginViewTest(TestCase):
         })
         token = Token.objects.first()
         self.assertEqual(token.email, 'test@example.com')
+        
     
     @patch('accounts.views.send_mail')
     def test_sends_login_link_using_token_uuid(self, mock_send_email):
@@ -88,3 +89,32 @@ class LoginViewTest(TestCase):
         (subjcet, body, from_email, to_list_email), kwargs = mock_send_email.call_args
         self.assertIn(expected_url, body)
 
+
+@patch('accounts.views.auth')
+class LoginViewTestMocked(TestCase):
+
+    def test_calls_authenticate_with_uid_from_get_request(self, mock_auth):
+        self.client.get(
+            path='/accounts/login?token=abc123'
+        )
+        self.assertEqual(
+            mock_auth.authenticate.call_args,
+            call(uid='abc123')
+        )
+
+    def test_calls_auth_login_on_user_if_exists(self, mock_auth):
+        response = self.client.get(
+            path='/accounts/login?token=abc123'
+        )
+
+        self.assertEqual(
+            mock_auth.login.call_args,
+            call(response.wsgi_request, mock_auth.authenticate.return_value)
+        )
+
+    def test_does_not_login_if_user_is_not_authenticated(self, mock_auth):
+        mock_auth.authenticate.return_value = None
+        response = self.client.get(
+            path='/accounts/login?token=abc123'
+        )
+        self.assertFalse(mock_auth.login.called)
