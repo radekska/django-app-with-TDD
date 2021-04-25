@@ -10,12 +10,6 @@ RUN mkdir /app/static
 # copy project files to Docker's root directory
 ADD . /app/
 
-# set env variables for AWS S3 storage
-ENV HEROKU=True
-
-# set DB url
-ENV DATABASE_URL=postgres://jtzqgdylivvtox:6225ea7182475ac8867d9192ffcf4dbd32fcab68869238ff228be1ff17c3cca7@ec2-34-252-251-16.eu-west-1.compute.amazonaws.com:5432/dbuq792me3ba7j
-
 # change cd to root directory
 WORKDIR /app
 
