@@ -5,7 +5,6 @@ from django.contrib.auth.backends import BaseBackend
 class PasswordlessAuthenticationBackend(BaseBackend):
     
     def authenticate(self, uid):
-        
         try:
             token = Token.objects.get(uid=uid)
             return User.objects.get(email=token.email)

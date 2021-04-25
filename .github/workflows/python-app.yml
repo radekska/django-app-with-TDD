@@ -39,7 +39,11 @@ jobs:
      - name: Build container and push it to Heroku Container registry
        env: 
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-       run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME_PROD }} web
+       run: |
+        heroku config:set -a ${{ secrets.HEROKU_APP_NAME_PROD }} \ 
+        EMAIL_HOST_USER=${{ secrets.EMAIL_HOST_USER }} \
+        EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }}
+        heroku container:push -a ${{ secrets.HEROKU_APP_NAME_PROD }} web
      - name: Release App to Heroku 
        env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
