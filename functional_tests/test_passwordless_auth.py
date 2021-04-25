@@ -1,7 +1,7 @@
 from django.core import mail
 from selenium.webdriver.common.keys import Keys
 import re
-
+import time
 from .base import FunctionalTest
 
 TEST_EMAIL = 'testemail@example.com'
@@ -24,6 +24,7 @@ class PasswordlessAuthenticationTest(FunctionalTest):
         self.assertIn(TEST_EMAIL, email.to)
         self.assertEqual(SUBJCET, email.subject)
 
+        time.sleep(10)
         self.assertIn('Use this link to log in', email.body)
         url_search = re.search(r'http://.+/.+$', email.body)
         if not url_search:
