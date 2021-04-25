@@ -32,6 +32,8 @@ RUN pip install --upgrade pip \
 && python3 manage.py collectstatic --noinput --verbosity 3
 
 # need to decleare env vars as well as needed in run time.
+ENV HEROKU="True"
+
 ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
 ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 ENV AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
