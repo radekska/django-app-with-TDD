@@ -148,7 +148,6 @@ USE_TZ = True
 
 # Configure S3 AWS storages module when deploying to heroku
 # Pushes recent static files to S3 repository
-print(os.environ)
 if os.environ.get('HEROKU'):
     # Boto3
     STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'

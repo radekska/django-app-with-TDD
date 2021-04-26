@@ -31,7 +31,7 @@ jobs:
      - name: Run unit tests
        run: |
          python3 manage.py makemigrations
-         python3 manage.py test lists/     
+         python3 manage.py test --verbosity 3 lists accounts 
      - name: Login to Heroku Container registry
        env: 
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
