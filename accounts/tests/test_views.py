@@ -99,7 +99,7 @@ class LoginViewTestMocked(TestCase):
         )
         self.assertEqual(
             mock_auth.authenticate.call_args,
-            call(uid='abc123')
+            call('abc123')
         )
 
     def test_calls_auth_login_on_user_if_exists(self, mock_auth):

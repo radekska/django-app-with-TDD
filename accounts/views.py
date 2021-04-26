@@ -29,3 +29,7 @@ def login(request):
     if user is not None:
         auth.login(request, user)
     return redirect('/')
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/')
