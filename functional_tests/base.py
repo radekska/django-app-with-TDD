@@ -9,6 +9,18 @@ import unittest
 
 MAX_WAIT = 10
 
+def wait(func):
+	def inner(*args, **kwargs):
+		start_time = time.time()
+		while True:
+			try:
+				return func(*args, **kwargs)
+			except (AssertionError, WebDriverException) as exception:
+				if time.time() - start_time > MAX_WAIT:
+					raise exception
+				time.sleep(0.5)	
+	return inner
+
 
 class FunctionalTest(StaticLiveServerTestCase):
 	@classmethod
@@ -25,44 +37,29 @@ class FunctionalTest(StaticLiveServerTestCase):
 		cls.browser.quit()
 		super().tearDownClass()
 
-	def wait_for_row_in_table(self, input_text):
-		start_time = time.time()
-		while True:
-			try:
-				table = self.browser.find_element_by_id('id_list_table')
-				rows = table.find_elements_by_tag_name('tr')
-				self.assertIn(input_text, [row.text for row in rows], 
-					f"New to-do item did not apper in the table \nContents are: {table.text}")
-				return None
-			except (AssertionError, WebDriverException) as exception:
-				if time.time() - start_time > MAX_WAIT:
-					raise exception
-				time.sleep(0.5)
-
+	@wait
 	def wait_for(self, func):
-		start_time = time.time()
-		while True:
-			try:
-				return func()
-			except (AssertionError, WebDriverException) as exception:
-				if time.time() - start_time > MAX_WAIT:
-					raise exception
-				time.sleep(0.5)
+		return func()
 
 	def get_item_input_box(self):
 		return self.browser.find_element_by_id('id_text')
 
+	
+	@wait
+	def wait_for_row_in_table(self, input_text):
+		table = self.browser.find_element_by_id('id_list_table')
+		rows = table.find_elements_by_tag_name('tr')
+		self.assertIn(input_text, [row.text for row in rows], 
+			f"New to-do item did not apper in the table \nContents are: {table.text}")
 
+	@wait
 	def wait_to_be_logged_in(self, email):
-		self.wait_for(
-			lambda: self.browser.find_element_by_link_text('Log out')
-		)
+		self.browser.find_element_by_link_text('Log out')
 		navbar = self.browser.find_element_by_css_selector('.navbar')
 		self.assertIn(email, navbar.text)
 
+	@wait
 	def wait_to_be_logged_out(self, email):
-		self.wait_for(
-			lambda: self.browser.find_element_by_name('email')
-		)
+		self.browser.find_element_by_name('email')
 		navbar = self.browser.find_element_by_css_selector('.navbar')
 		self.assertNotIn(email, navbar.text)
