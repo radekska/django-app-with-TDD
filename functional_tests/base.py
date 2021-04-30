@@ -2,6 +2,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException
+from .server_tools
 
 import os
 import time
@@ -23,19 +24,22 @@ def wait(func):
 
 
 class FunctionalTest(StaticLiveServerTestCase):
-	@classmethod
-	def setUpClass(cls):
-		super().setUpClass()
-		cls.browser = WebDriver()
 
-		staging_server = os.environ.get('STAGING_SERVER')
-		if staging_server:
-			cls.live_server_url = f'http://{staging_server}'
 
-	@classmethod
-	def tearDownClass(cls):
-		cls.browser.quit()
-		super().tearDownClass()
+	def setUp(self):
+		super().setUp()
+		self.browser = WebDriver()
+
+		self.staging_server = os.environ.get('STAGING_SERVER')
+		if self.staging_server:
+			self.live_server_url = f'http://{self.staging_server}'
+			reset_database(self.staging_server)
+
+
+	def tearDown(self):
+		self.browser.quit()
+		super().tearDown()
+
 
 	@wait
 	def wait_for(self, func):
