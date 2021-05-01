@@ -36,3 +36,6 @@ def new_list(request):
 
 	return redirect(new_item_list)
 
+
+def my_lists(request, email):
+	return render(request, 'my_lists.html')

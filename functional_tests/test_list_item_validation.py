@@ -42,10 +42,8 @@ class ItemValidationTest(FunctionalTest):
     
     def test_cannot_add_duplicate_items(self):
         self.browser.get(self.live_server_url)
-        self.get_item_input_box().send_keys('Buy same car')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_table('1: Buy same car')
-
+        self.add_list_item('Buy same car')
+        
         self.get_item_input_box().send_keys('Buy same car')
         self.get_item_input_box().send_keys(Keys.ENTER)
 
@@ -56,9 +54,7 @@ class ItemValidationTest(FunctionalTest):
 
     def test_error_messages_are_cleared_on_input(self):
         self.browser.get(self.live_server_url)
-        self.get_item_input_box().send_keys('Take a shower.')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_table('1: Take a shower.')
+        self.add_list_item('Take a shower.')
         self.get_item_input_box().send_keys('Take a shower.')
         self.get_item_input_box().send_keys(Keys.ENTER)
 
@@ -73,10 +69,7 @@ class ItemValidationTest(FunctionalTest):
         self.browser.get(self.live_server_url)
         self.action_chains = ActionChains(self.browser)
 
-        self.get_item_input_box().send_keys('Brush your teeth.')
-        self.get_item_input_box().send_keys(Keys.ENTER)
-        self.wait_for_row_in_table('1: Brush your teeth.')
-
+        self.add_list_item('Brush your teeth.')
         self.get_item_input_box().send_keys('Brush your teeth.')
         self.get_item_input_box().send_keys(Keys.ENTER)
         self.wait_for(lambda : self.assertTrue(

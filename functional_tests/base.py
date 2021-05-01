@@ -9,6 +9,7 @@ import time
 import unittest
 
 MAX_WAIT = 10
+DATABASE_CLEARED = False
 
 def wait(func):
 	def inner(*args, **kwargs):
@@ -33,7 +34,12 @@ class FunctionalTest(StaticLiveServerTestCase):
 		self.staging_server = os.environ.get('STAGING_SERVER')
 		if self.staging_server:
 			self.live_server_url = f'http://{self.staging_server}'
-			reset_database(self.staging_server)
+
+			global DATABASE_CLEARED
+			if not DATABASE_CLEARED:
+				reset_database(self.staging_server)
+				DATABASE_CLEARED = True
+				
 
 
 	def tearDown(self):
@@ -67,3 +73,10 @@ class FunctionalTest(StaticLiveServerTestCase):
 		self.browser.find_element_by_name('email')
 		navbar = self.browser.find_element_by_css_selector('.navbar')
 		self.assertNotIn(email, navbar.text)
+
+	def add_list_item(self, list_item_text):
+		num_rows = len(self.browser.find_elements_by_css_selector('#id_list_table tr'))
+		self.get_item_input_box().send_keys(list_item_text)
+		self.get_item_input_box().send_keys(Keys.ENTER)
+		item_number = num_rows + 1
+		self.wait_for_row_in_table(f'{item_number}: {list_item_text}')

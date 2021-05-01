@@ -174,4 +174,13 @@ class NewListTest(TestCase):
 		self.assertIsInstance(response.context['form'], ItemForm)
 
 
+class MyListsTest(TestCase):
+
+	def test_my_lists_url_renders_proper_template(self):
+		response = self.client.get(path='/lists/users/a@b.com/')
+		self.assertEqual(response.status_code, 200)
+		self.assertTemplateUsed(response, 'my_lists.html')
+
+
+
 
