@@ -6,3 +6,4 @@ __pycache__
 lists/migrations
 accounts/migrations
 .DS_Store
+.idea/
